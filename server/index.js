@@ -334,6 +334,10 @@ app.post('/api/improve-summary', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => {
-  console.log(`CareerCraft AI server running on http://127.0.0.1:${PORT}`)
-})
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`CareerNova AI server running on http://127.0.0.1:${PORT}`)
+  })
+}
+
+export default app
