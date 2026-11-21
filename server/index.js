@@ -11,6 +11,13 @@ const PORT = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json({ limit: '1mb' }))
+const frontendPath = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'public'
+)
+
+app.use(express.static(frontendPath))
 
 function getAiConfig() {
   const groqKey = process.env.GROQ_API_KEY
@@ -332,6 +339,9 @@ app.post('/api/improve-summary', async (req, res) => {
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message || 'Summary generation failed.' })
   }
+})
+app.get('/{*splat}', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'))
 })
 
 if (!process.env.VERCEL) {
